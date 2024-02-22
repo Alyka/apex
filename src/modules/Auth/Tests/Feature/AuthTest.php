@@ -20,7 +20,7 @@ class AuthTest extends TestCase
 
         $data = compact('email', 'password');
 
-        $response = $this->post('/api/login', $data);
+        $response = $this->postJson('/api/login', $data);
 
         $response->assertStatus(200);
     }
@@ -36,7 +36,7 @@ class AuthTest extends TestCase
 
         $data = compact('email', 'password');
 
-        $response = $this->post('/api/login', $data);
+        $response = $this->postJson('/api/login', $data);
 
         $token = $response->json('data.token');
 
@@ -53,7 +53,7 @@ class AuthTest extends TestCase
             'password' => 'wrong password',
         ];
 
-        $response = $this->post('/api/login', $data);
+        $response = $this->postJson('/api/login', $data);
 
         $response->assertInvalid(['login']);
     }

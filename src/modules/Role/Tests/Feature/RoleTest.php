@@ -37,7 +37,7 @@ class RoleTest extends TestCase
 
         $data = ['roles' => [Role::USER]];
 
-        $response = $this->put("/api/users/{$user->id}", $data);
+        $response = $this->putJson("/api/users/{$user->id}", $data);
 
         $roles = $response->assertJsonPath('data.roles', [Role::USER]);
     }

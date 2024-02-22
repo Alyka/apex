@@ -35,7 +35,7 @@ class AdminTest extends TestCase
             'roles' => ['user'],
         ];
 
-        $response = $this->post('/api/users', $userData);
+        $response = $this->postJson('/api/users', $userData);
 
         $response->assertStatus(201);
 
@@ -55,7 +55,7 @@ class AdminTest extends TestCase
             'roles' => ['user'],
         ];
 
-        $response = $this->post('/api/users', $userData);
+        $response = $this->postJson('/api/users', $userData);
 
         $response->assertInvalid(['password']);
     }
@@ -67,7 +67,7 @@ class AdminTest extends TestCase
 
         $userData = compact('name');
 
-        $response = $this->put("/api/users/{$user->id}", $userData);
+        $response = $this->putJson("/api/users/{$user->id}", $userData);
 
         $response->assertStatus(200);
 
@@ -78,7 +78,7 @@ class AdminTest extends TestCase
     {
         $user = UserRepository::factory()->create();
 
-        $response = $this->delete("/api/users/{$user->id}");
+        $response = $this->deleteJson("/api/users/{$user->id}");
 
         $response->assertStatus(200);
 
@@ -91,7 +91,7 @@ class AdminTest extends TestCase
     {
         $user = UserRepository::factory()->create();
 
-        $response = $this->get("/api/users/{$user->id}");
+        $response = $this->getJson("/api/users/{$user->id}");
 
         $response->assertStatus(200)
             ->assertJsonFragment($user->toArray());
