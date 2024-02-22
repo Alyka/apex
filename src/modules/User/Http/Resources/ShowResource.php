@@ -21,7 +21,7 @@ class ShowResource extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'roles' => RoleService::getRoles($this->resource),
-            'created_at' => Helper::timeFormat($this->created_at),
+            'date' => Helper::timeFormat($this->created_at),
         ];
     }
 }

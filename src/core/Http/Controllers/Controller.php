@@ -7,8 +7,6 @@ use Core\Contracts\Service;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Str;
 use ReflectionClass;
@@ -74,14 +72,9 @@ abstract class Controller extends BaseController
         if (class_exists($requestClass))
             $request = app($requestClass)->validated();
 
-        try {
-            $response = $this->service->{$method}(($request), ...$parameters);
-            return $this->handleResponse($response, $method);
-        } catch (BadMethodCallException $e) {
-            throw new BadMethodCallException(sprintf(
-                'Method %s::%s does not exist.', static::class, $method
-            ));
-        }
+        $response = $this->service->{$method}(($request), ...$parameters);
+
+        return $this->handleResponse($response, $method);
     }
 
     /**

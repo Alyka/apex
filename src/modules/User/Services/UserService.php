@@ -46,4 +46,22 @@ class UserService extends Service implements UserServiceContract
 
         return $user;
     }
+
+    public function update(array $request, int $id): Model
+    {
+        DB::beginTransaction();
+
+        if (isset($request['password']))
+            $request['password'] = Hash::make($request['password']);
+
+        $user = parent::update($request, $id);
+
+        if (! empty(@$request['roles'])) {
+            RoleService::sync($request['roles'], $user);
+        }
+
+        DB::commit();
+
+        return $user;
+    }
 }

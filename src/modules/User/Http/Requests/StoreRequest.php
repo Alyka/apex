@@ -30,7 +30,7 @@ class StoreRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
-            'email' => 'required|email:rfc,dns|unique:users',
+            'email' => 'required|email|unique:users',
             'password' => [
                 'required',
                 new Password(5),

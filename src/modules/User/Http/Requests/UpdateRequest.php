@@ -35,7 +35,7 @@ class UpdateRequest extends FormRequest
             'name' => 'nullable|string',
             'email' => [
                 'nullable',
-                'email:rfc,dns',
+                'email',
                 Rule::unique(User::class)->ignore($this->route('user')),
             ],
             'password' => [

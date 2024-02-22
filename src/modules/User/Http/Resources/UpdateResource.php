@@ -2,7 +2,9 @@
 
 namespace Modules\User\Http\Resources;
 
+use Core\Helpers\Helper;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Role\Facades\RoleService;
 
 class UpdateResource extends JsonResource
 {
@@ -14,6 +16,12 @@ class UpdateResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [];
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'email' => $this->email,
+            'roles' => RoleService::getRoles($this->resource),
+            'date' => Helper::timeFormat($this->updated_at),
+        ];
     }
 }

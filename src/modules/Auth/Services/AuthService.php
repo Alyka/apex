@@ -26,7 +26,7 @@ class AuthService implements ContractsAuthService
 
         if (! $user || ! Hash::check($request['password'], $user->password)) {
             throw ValidationException::withMessages([
-                'email' => [trans('response.invalid_credentials')],
+                'login' => [trans('response.invalid_credentials')],
             ]);
         }
 

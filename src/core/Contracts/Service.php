@@ -37,9 +37,9 @@ interface Service extends Identifiable, Configurable
      *
      * @param array $request
      * @param int $id
-     * @return bool
+     * @return Model
      */
-    public function update(array $request, int $id): bool;
+    public function update(array $request, int $id): Model;
 
     /**
      * Delete the specified resource from storage.
