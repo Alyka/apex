@@ -64,6 +64,22 @@ class RoleService extends Service implements RoleServiceContract
     }
 
     /**
+     * Sync the roles.
+     *
+     * @param array $roles
+     * @param Model $rolable
+     * @return void
+     */
+    public function sync(array $roles, Model $rolable): void
+    {
+        $keys = $this->repository->whereIn('code', $roles)
+            ->pluck('id')
+            ->toArray();
+
+        $rolable->roles()->sync($keys);
+    }
+
+    /**
      * Get all roles assigned to the given entity
      *
      * @param Model $rolable

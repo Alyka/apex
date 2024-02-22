@@ -8,17 +8,32 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 trait HasRole
 {
     /**
-     * Filter the query by role.
+     * Select all resources who have a role of admin
      *
-     * @param Builder $builder
-     * @param string $role
+     * @param Builder $query
      * @return Builder
      */
-    public function filterByRole(Builder $builder, $role)
+    public function scopeAdmin(Builder $query)
     {
-        return $builder->whereHas('roles', function ($builder) use ($role) {
-            $builder->where('name', $role);
-        });
+        return $query->whereHas('roles', function ($query) {
+                $query->whereCode(Role::ADMIN);
+            });
+    }
+
+    /**
+     * Select all resources who have a role of user
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeUserOnly(Builder $query)
+    {
+        return $query->whereHas('roles', function ($query) {
+                $query->whereCode(Role::USER);
+            })
+            ->whereDoesntHave('roles', function ($query) {
+                $query->whereCode(Role::ADMIN);
+            });
     }
 
     /**

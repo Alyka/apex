@@ -70,13 +70,14 @@ abstract class Service implements ServiceContract
      *
      * @param array $request
      * @param int $id
-     * @return bool
+     * @return Model
      */
-    public function update(array $request, int $id): bool
+    public function update(array $request, int $id): Model
     {
         $model = $this->repository->findOrFail($id);
+        $model->update($request);
 
-        return $model->update($request);
+        return $model->refresh();
     }
 
     /**
