@@ -8,7 +8,7 @@ services:
         container_name: apex
         restart: unless-stopped
         ports:
-            - "9000:9000"
+            - "9001:9000"
         entrypoint:
             - "/bin/bash"
             - "./src/docker/entrypoint.sh"
