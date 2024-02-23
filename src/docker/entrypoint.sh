@@ -1,9 +1,17 @@
 #!/bin/sh
 
 php artisan migrate
-php artisan passport:install
-php artisan passport:client --personal
+php artisan passport:install --force
+
+# Generate passport personal client credentials and write them to the .env file
+# so that this wouldn't need to be done manually.
+php artisan passport:client --personal --no-interaction | awk '/Client ID/ {print "\nPASSPORT_PERSONAL_ACCESS_CLIENT_ID=\"" $NF "\""} /Client secret/ {print "PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET=\"" $NF "\""}' >> .env
+
+# Configure all modules and initialize/set their data in the database.
 php artisan module:config
+
+# Seed the database.
+php artisan db:seed
 
 # Define an array of log file paths
 log_files=(

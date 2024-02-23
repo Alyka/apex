@@ -1,66 +1,88 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## **Technologies used:**
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+* PHP: 8.2
+* Laravel: 10
+* Postgres: latest
+* Docker: 24.0.2
+* Docker Compose: 2.18.1
+* Nginx: latest
+* Supervisor: latest
 
-## About Laravel
+### **Other extensions and utilities:**
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+* zip, unzip, curl, libzip-dev, libpng-dev, libssl-dev, libpq-dev, gd, pdo, pdo\_pgsql
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Installation:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+1. Make sure Docker and Docker Compose are installed on your system.
+2. Clone the project from GitHub:  `git clone `[`https://github.com/Alyka/apex.git`](https://github.com/Alyka/apex.git)` && cd apex`
+3. Build the images and start the containers:  `docker compose up --build -d`
+4. The application should be live at `localhost:8080`.
 
-## Learning Laravel
+During installation, a default admin user is created for you, for testing on postman, with the following details:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+* **Name:** Admin
+* **Email:** [admin@example.com](mailto\:admin@example.com)
+* **Password:** admin
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+You may also create a new admin user by running this command and following the prompt:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+`docker exec -it apex php artisan module:create-admin`
 
-## Laravel Sponsors
+This command does the same thing as manually creating a user via postman except that the command sets the role to admin automatically.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Testing
 
-### Premium Partners
+Run the following command to test the application:
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+`docker exec -it apex php artisan test`
 
-## Contributing
+A postman collection is also bundled with the project. You can import this collection in postman and start your manual testing straight away. This file is located at `src/postman/Apex.postman_collection.json`
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## **Connecting to the database from your computer:**
 
-## Code of Conduct
+You can connect to the database container from your host computer using a PostgreSQL database client.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+**Connection details:**
 
-## Security Vulnerabilities
+* **Host:** localhost
+* **Port:** 5433
+* **Database:** apex
+* **Username:** apex
+* **Password:** password
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+> **Note:** These variables are located in the `.env` file. Modify them as needed. If you change the port, also update it in the `docker-compose.yml` file before starting the container.
 
-## License
+## **Architecture concepts:**
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+* **Service Repository pattern:** Used to abstract the data access layer from the business logic layer. Repositories handle database interactions, and services encapsulate business logic.
+* **Pluggability:** The entire application is built as a Laravel package, facilitating seamless integration into a fresh Laravel installation.
+* **Modularity:** The application is organized as a collection of independent, pluggable, and reusable modules.&#x20;
+* **Proxy Pattern:** Methods are not explicitly defined in the controllers rather a controller class acts as a proxy that forwards calls to its methods to a corresponding service class, which is responsible for handling the business logic. This pattern helps in avoiding repetition by eliminating the need to create duplicate methods in both the controller and service classes.
+
+## **Folder structure:**
+
+* **src:** Houses all project code. Sub-folders include:
+  * **core:** Contains essential components and functionalities, including base classes, service providers, models, services, repositories, helpers/utilities, custom Artisan commands, and shared components.
+  * **docker:** Configuration files for building and configuring images and containers:
+    * `Dockerfile`: Instructions for building the base image.
+    * `entrypoint.sh`: Runs pre-initialization scripts for automated setup, including database migrations, seeding, Laravel Passport installation, generating a Passport personal client, and storing it in the `.env` file.
+    * `nginx.conf`: Nginx configurations with server blocks.
+    * `supervisord.conf`: Supervisor configuration for managing processes (fpm, schedules, queues).
+  * **modules:** Contains all application modules:
+    * `Auth`: Handles authentication and Passport API token generation. Includes a `config/config.php` file for auth configurations, merged with the default Laravel `config/auth.php` file. This avoids modifying core framework files.
+    * `Role`: Handles role management. Separating roles prevents reusability, scalability, and maintainability issues as the application grows.
+    * `User`: Handles user creation, update, and deletion.
+
+## Module
+
+The application is built as a collection of independent, pluggable, and reusable modules. Each module uses a similar folder structure to a full Laravel app to ensure a consistent and familiar organization.  Each module has its own `controllers`, `models`, `policies`, `form requests`, `service providers`, `API resources`, `services`, `repositories`, `config`, `routes`, `migrations`, `seeders`, `factories`,  `tests`, `events`, `listeners` and even `custom artisan commands` . There are other folders like `contracts` and `facades.` These folders contain contracts and facades classes which provide an abstraction layer, a way to interact with components of the application at a higher level without needing to know the specific details of their implementations (in line with the **Factory Method** and **Facade Design Pattern**).
+
+Let's further analyse few components of a module:
+
+* Controller: When a request reaches to the controller, it first looks for a a
+* Service:
+* Repository
+* Form request
+* Api Resource
+* Command

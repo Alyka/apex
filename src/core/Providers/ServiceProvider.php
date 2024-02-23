@@ -58,7 +58,7 @@ abstract class ServiceProvider extends SupportServiceProvider
             $defaultConfig = $config->get($key, []);
             $customConfig = require $path;
 
-            $config->set($key, array_merge_recursive_distinct(
+            $config->set($key, Helper::arrayMergeRecursiveDistinct(
                 $defaultConfig,
                 $customConfig
             ));

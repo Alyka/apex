@@ -1,13 +1,13 @@
 <?php
 
-namespace Core\Commands;
+namespace Modules\User\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Validation\ValidationException;
 use Modules\Role\Models\Role;
 use Modules\User\Facades\UserService;
-use Modules\User\Http\Requests\CreateAdminRequest;
+use Modules\User\Http\Requests\StoreRequest;
 
 class CreateAdmin extends Command
 {
@@ -16,7 +16,7 @@ class CreateAdmin extends Command
      *
      * @var string
      */
-    protected $signature = 'create:user-admin';
+    protected $signature = 'module:create-admin';
 
     /**
      * The console command description.
@@ -45,15 +45,13 @@ class CreateAdmin extends Command
         Request::merge([
             'name' => $this->ask('Enter your name'),
             'email' => $this->ask('Enter your email'),
-            'phone_number' => $this->ask('Phone number'),
-            'wallet_id' => $this->ask('Wallet ID'),
             'password' => $this->secret('Enter password'),
             'password_confirmation' => $this->secret('Confirm password'),
             'roles' => [Role::ADMIN]
         ]);
 
         try {
-            $data = app(CreateAdminRequest::class)->validated();
+            $data = app(StoreRequest::class)->validated();
         } catch(ValidationException $e) {
             $this->error($e->getMessage());
             return;
