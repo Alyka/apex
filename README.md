@@ -1,3 +1,15 @@
+## Introduction
+
+This document provides a comprehensive overview and installation guide for the Apex application, built on Laravel and Docker.
+
+### **Key Features:**
+
+* **Modern Stack:** Utilizes Laravel 10, Postgres, Docker, and Nginx for a robust and scalable architecture.
+* **Modular Design:** Organized into reusable modules for enhanced maintainability and flexibility.
+* **Clear Separation of Concerns:** Employs Service Repository pattern and Proxy pattern for efficient code organization.
+* **Robust Testing:** Includes automated and manual testing tools for ensuring application quality.
+* **Detailed Documentation:** This document covers installation, architecture, testing, database connection, and folder structure.
+
 ## **Technologies used:**
 
 * PHP: 8.2
@@ -57,7 +69,7 @@ You can connect to the database container from your host computer using a Postgr
 
 * **Service Repository pattern:** Used to abstract the data access layer from the business logic layer. Repositories handle database interactions, and services encapsulate business logic.
 * **Pluggability:** The entire application is built as a Laravel package, facilitating seamless integration into a fresh Laravel installation.
-* **Modularity:** The application is organized as a collection of independent, pluggable, and reusable modules.&#x20;
+* **Modularity:** The application is organized as a collection of independent, pluggable, and reusable modules. This separation helps maintain a clear understanding of each module's responsibilities within a the application, promoting the principles of separation of concerns and modularity in software design.
 * **Proxy Pattern:** Methods are not explicitly defined in the controllers rather a controller class acts as a proxy that forwards calls to its methods to a corresponding service class, which is responsible for handling the business logic. This pattern helps in avoiding repetition by eliminating the need to create duplicate methods in both the controller and service classes.
 
 ## **Folder structure:**
@@ -76,13 +88,14 @@ You can connect to the database container from your host computer using a Postgr
 
 ## Module
 
-The application is built as a collection of independent, pluggable, and reusable modules. Each module uses a similar folder structure to a full Laravel app to ensure a consistent and familiar organization.  Each module has its own `controllers`, `models`, `policies`, `form requests`, `service providers`, `API resources`, `services`, `repositories`, `config`, `routes`, `migrations`, `seeders`, `factories`,  `tests`, `events`, `listeners` and even `custom artisan commands` . There are other folders like `contracts` and `facades.` These folders contain contracts and facades classes which provide an abstraction layer, a way to interact with components of the application at a higher level without needing to know the specific details of their implementations (in line with the **Factory Method** and **Facade Design Pattern**).
+Each module uses a similar folder structure to a full Laravel app to ensure a consistent and familiar organization.  Each module has its own `controllers`, `models`, `policies`, `form requests`, `service providers`, `API resources`, `services`, `repositories`, `config`, `routes`, `migrations`, `seeders`, `factories`,  `tests`, `events`, `listeners` and even `custom artisan commands` . There are other folders like `contracts` and `facades.` which contain contracts and facades classes that provide an abstraction layer, a way to interact with components of the application at a higher level to promot **loose coupling**.
 
-Let's further analyse few components of a module:
+### Interaction Flow:
 
-* Controller: When a request reaches to the controller, it first looks for a a
-* Service:
-* Repository
-* Form request
-* Api Resource
-* Command
+* A request is received by the controller.
+* The controller automatically validates the input using a form request class corresponding to the targeted controller action. For example, a request to the controller action `UserController@index` will, by default, utilize a form request class named `IndexRequest.php` located in the `./Http/Requests/` directory of the `User` module.
+* Upon successful validation of the request, the controller forwards the call to the service layer to execute the associated business logic.
+* The service layer, in turn, communicates with the repository for necessary data operations.
+* If no exceptions are encountered, the service layer returns the response back to the controller.
+* The controller then transforms the data using an API resource class matching the name of the targeted controller action. Specifically, for a request to the controller action `UserController@index`, the application will use an API resource class named `IndexResource.php` located in the `./Http/Responses/` directory of the user module. In cases where the action is named `index`, the application automatically knows to return a collection by calling the collection method of the resource class. Simply put, if the action is named `index`, the application will return `IndexResource::collection($databaseCollection)` otherwise, it returns `new IndexResource($databaseModel)`.
+* The final transformed response is sent back to the client.
