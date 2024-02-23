@@ -4,7 +4,7 @@ services:
         build:
             context: .
             dockerfile: ./src/docker/Dockerfile
-        image: matthewalika/itex-vas
+        image: matthewalika/laravel-pgsql
         container_name: apex
         restart: unless-stopped
         ports:
@@ -17,7 +17,8 @@ services:
         networks:
             - network
         depends_on:
-            - mysql
+            - pgsql
+            - nginx
     nginx:
         image: nginx:latest
         container_name: apex_nginx
@@ -32,22 +33,18 @@ services:
             - "8080:80"
         networks:
             - network
-        depends_on:
-            - app
-    mysql:
-        image: mysql:latest
-        container_name: apex_mysql
+    pgsql:
+        image: postgres:latest
+        container_name: apex_postgres
         restart: unless-stopped
         environment:
-            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-            MYSQL_DATABASE: ${DB_DATABASE}
-            MYSQL_USER: ${DB_USERNAME}
-            MYSQL_PASSWORD: ${DB_PASSWORD}
+            POSTGRES_USER: ${DB_USERNAME}
+            POSTGRES_PASSWORD: ${DB_PASSWORD}
+            POSTGRES_DB: ${DB_DATABASE}
         ports:
-            - "3307:3306"
+            - "5433:5432"
         networks:
             - network
-        command: ["mysqld", "--pid-file=/var/run/mysqld/mysqld.pid"]
 networks:
     network:
         driver: bridge

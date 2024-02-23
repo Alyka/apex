@@ -1,14 +1,11 @@
 <?php
 
-namespace Core\Database\Eloquent;
+namespace Core\Models;
 
 use Illuminate\Database\Eloquent\Model as BaseModel;
-use Core\Database\Eloquent\Concerns\Modelable;
 
 class Model extends BaseModel
 {
-    use Modelable;
-
     /**
      * The model factory instance.
      *

@@ -5,7 +5,6 @@ namespace Modules\User\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
-use Core\Database\Eloquent\Concerns\Modelable;
 use Laravel\Passport\HasApiTokens;
 use Modules\Role\Models\HasRole;
 use Modules\User\Database\Factories\UserFactory;
@@ -14,8 +13,7 @@ class User extends Authenticatable implements AuthenticatableContract
 {
     use HasFactory,
         HasApiTokens,
-        HasRole,
-        Modelable;
+        HasRole;
 
     /**
      * @inheritDoc

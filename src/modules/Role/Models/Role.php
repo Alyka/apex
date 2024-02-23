@@ -3,7 +3,7 @@
 namespace Modules\Role\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Core\Database\Eloquent\Model;
+use Core\Models\Model;
 use Modules\Role\Database\Factories\RoleFactory;
 
 class Role extends Model

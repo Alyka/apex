@@ -17,6 +17,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->registerCommands();
         $this->registerMigrations();
     }
 
