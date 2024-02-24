@@ -25,10 +25,106 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Logout",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/logout",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"logout"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.25.4"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.16"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 24 Feb 2024 20:35:24 GMT"
+								},
+								{
+									"key": "X-RateLimit-Limit",
+									"value": "60"
+								},
+								{
+									"key": "X-RateLimit-Remaining",
+									"value": "59"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=31536000; includeSubDomains; preload"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "gzip"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [],\n    \"code\": 200,\n    \"message\": \"Success\"\n}"
+						}
+					]
 				},
 				{
 					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -52,13 +148,222 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Login",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"admin@example.com\",\n    \"password\": \"admin\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.25.4"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.16"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 24 Feb 2024 23:17:12 GMT"
+								},
+								{
+									"key": "X-RateLimit-Limit",
+									"value": "60"
+								},
+								{
+									"key": "X-RateLimit-Remaining",
+									"value": "59"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=31536000; includeSubDomains; preload"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "gzip"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"access_token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiMGY2NjhmOWUyZjNlNjQwYTgyN2M3ZjBlNjZhYWIwOTQ0YTVhN2VjNmU4YjI2Y2I5NWZlZGYyOTg3ZjNjY2UxOWEzZDQ0YjZmOTBhNzAyNTMiLCJpYXQiOjE3MDg4MTY2MzIuMTYzMjAzLCJuYmYiOjE3MDg4MTY2MzIuMTYzMjQ3LCJleHAiOjE3MDg4MjAyMzIuMTMwOTI3LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.cutujiFbb5-w6fBsEsaM7cSTfsnUTTuOgVMNYcOLSjwIgoISxg7QccJ5g06sgDllcQzPVeCuejPPKhf49CcE8zghsj6fOj9bSjRvCKnCOjIMDwJN6NnkiyMMoxOgvi_tN1L7OkyjliZqvYovl0c_5oCjzsgzye28D-zOB4CIp3qaleuK3bckJG0bSkmzSQOPF_-EAKHDDK6lAYLhIdBJ-HsDqCuF3JG6gVI25WEE2aBD2dlVzh4I3EipZZuJbJs8Ct3mT6-9ajiPvePxLjtW7N0S50J22WtJ1Mkz1Hg5lZv0ZhqBm5X73Up-nMZpUnX_827qvIbMmtqrdo-YDe2QUiaEfHo4PG2M66aAusPoRXtcbkOspdvAOlHwvNc8c_nFym0l8KIVfCOVRinxo1PpDn6Bqyxvp8YR62EnxkRh3KgUpUWa1qW8CASJ4zGL-MLIS2lBmXoilh0GrncjyUnDcApwUogAYkDaunUR6GN8xQuhx61-pJ_1ZRwFuTm4Jd0PQNbgNMNXvrCpSiDARemOnihmB_7CKPk8T2DxlZDxoX8iTHxyAO7gCerezT7oijIu9TuwJ2wnwA1kqFeEQ9UI2sJHv0t1I9yeTWrQ_vdlLDI7xVUHB8SoHsPYQX-uVBPpfESSERE0nuLGsw_lRjwnhTCFkA9EBNc8hxxd6i9_WPI\",\n        \"expires_in\": \"59 minutes after\",\n        \"expires_at\": \"2024-02-25T00:17:12.000000Z\"\n    },\n    \"code\": 200,\n    \"message\": \"Success\"\n}"
+						}
+					]
 				}
 			]
 		},
 		{
 			"name": "User",
 			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"John Doe\",\n    \"email\": \"johndoe1@example.com\",\n    \"password\": \"password\",\n    \"password_confirmation\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/users/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"register"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Register",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"John Doe\",\n    \"email\": \"johndoe1@example.com\",\n    \"password\": \"password\",\n    \"password_confirmation\": \"password\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/users/register",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"users",
+										"register"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.25.4"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.16"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 24 Feb 2024 20:17:56 GMT"
+								},
+								{
+									"key": "X-RateLimit-Limit",
+									"value": "60"
+								},
+								{
+									"key": "X-RateLimit-Remaining",
+									"value": "59"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=31536000; includeSubDomains; preload"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": 13,\n        \"name\": \"John Doe\",\n        \"email\": \"johndoe1@example.com\",\n        \"roles\": [\n            \"user\"\n        ],\n        \"date\": \"2024-24-02 20:17\"\n    },\n    \"code\": 201,\n    \"message\": \"Success\"\n}"
+						}
+					]
+				},
 				{
 					"name": "Create user",
 					"request": {
@@ -406,7 +711,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/api/users?page=1&limit=10",
+							"raw": "{{baseUrl}}/api/users?page=1&limit=2",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -421,7 +726,7 @@
 								},
 								{
 									"key": "limit",
-									"value": "10"
+									"value": "2"
 								}
 							]
 						}
@@ -636,7 +941,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiNjQ0ZDlkMGM1ZWRlMzk1MjE2MThlODZjZDlhNzBmMTMxNzNiYjZkZmEyNmZhNmQ3N2UxNGYwM2Q5MzAwNjMzMGJhOTY0ZTdiNTMwODkyNWQiLCJpYXQiOjE3MDg3Njg1OTkuODMxMjE0LCJuYmYiOjE3MDg3Njg1OTkuODMxMjE2LCJleHAiOjE3NDAzOTA5OTkuODExMDMxLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.Z89SSi5MPwfSbi2FBOkRBHzB2s4BHqKPrNmt3onWJTuyF_00h54Fa83MD7PEtkwExzgaZWmWQCIAq6jJ5BANqxfXKZQcEHQN0xrSQUYr2ExzQyzNcwGJCBbVSM-ehBYcmiTIRwdTw1o8CXKe0h-H7tRc3PY9jMYU5ilGiXShMIl8w0S7ux8fiNQyEnr3K2QqnyH7Mrfb1_HuSRzfHnStShNeU6NmkQNnFULHvQAMd8CAFIQlyDMpUvjDITFRuz5u0ojj-3XThqHx0YWOHflC1nkha1BVGJ94EujWJ6oK3Y_EJ_dnG1Gcb0cK3y85dOwBE4wFThzNn9XKfqPEjdOxR8pzLROKzbVpKROUtROJU--kkKmArCpmY0grb-6UYcNVFSfl2U2RKIlz3623zP3pqXk5gjBitN68nSOR3kH-niMYS-p_vlDPAJlzTkL9q8jQgzTOk-S4BfWNsPTGBTeI8jilkVVZxbEfFGBUcN26hYOG-WHx_YpHWYAXwnNt0VbG3QjDNM4QHmDjBhTsB7FQ-OaS0aSfKk34cnjIsmsPwCdRawtBldYcXU_f0zWECfsq9Vpu1RGxbBX78OcDnBGUUQwsGYIZn9V708rBfcy0zC8uBFTrJqPkwa9WK7IG90jQCjGJJITTYHwhvFL1Q4HyUo-3kMXCQ-c7iZt_W4Hpp2A",
+				"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiZDg1ZTdhNzY5NDM2M2E3MmMwNTY0ODMwZWIwMDgzZTcxMDNiZmMwNDQ3MDI3Y2NiOTI0MWIzY2I0NTczNzFmNGM2NzlkODE4YzdjZmYyMGQiLCJpYXQiOjE3MDg4MTU0ODIuOTk2MDk5LCJuYmYiOjE3MDg4MTU0ODIuOTk2MTAzLCJleHAiOjE3MDg4MTU1NDIuOTc2OTUzLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.U9xewdRjmYNVILlP9IUI0Y_o3VQjOVMTYZF8WiRc-DrIS_gN23kECifxiH8HQsTtLhNYyN7Vll0Ubmiyk0M545b49kXTY7yVUkNwvWvPKyCSHxFoPrTrUoICmPAH4IM3gdTG9nOq2jASSb0KEU0JFpJVs84abssX6FdDfj2-AualGDurA_4MPn2iNrSM8_TOVXSUzyCW1InIkMGExlCf_j2Nwg-cfzSTPCrcT7GShPDoo1eqtnWtQ6fwtwwBDSDtRu333rVew0Sq01WeuTrcIlPna4FyRrpbPTAogD9lGslANaNu2A9q3sHQoQIH4wavt7GyzLvgAm0BvWKQ1QcmsH2OUd6H4EE-oB1lTxj4guStxrfFd6zO_y_hcUex8bNXy5M8jHRwwQEsVo9M-h9Yn8NGBE5T7l4x72MqC-zbDKcQBAHwiq1Lurj-Wg-HenGL-cN1eJW4a_KBcNrsxGRxb_jgFBN3dhGgyUeTmwF3jgC83x62qM2PMXW3wNJc1kZSIkLwc68H_DmQjk7qK9xAu230lr6AFp3vniPxhcD_hlyitj2_GWn6gjpSaW337D-fYoxFpEzGFbudTUAtKxDatk-Nx90Cs61_WkqERaE9QbqO99awA4_sDmvjhz0mWcVJCEi7usCihgRG--CIfHdbzLNG3sfEigGYU0TesN5p19w",
 				"type": "string"
 			}
 		]

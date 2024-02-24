@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Modules\Role\Services\RoleUserProvider;
 use Laravel\Passport\Passport;
-use Modules\Auth\Services\AuthService;
+use Modules\Auth\Facades\AuthService;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -38,14 +38,15 @@ class AuthServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register all passport configurations
+     * Register all passport configurations.
      *
      * @return void
      */
     protected function configurePassport(): void
     {
-        $hours = AuthService::config('token_expiry_time');
-        Passport::tokensExpireIn(now()->addHours($hours));
+        $seconds = AuthService::config('token_expiry_time');
+        $expiryTime = now()->addSeconds($seconds);
+        Passport::personalAccessTokensExpireIn($expiryTime);
 
         Passport::hashClientSecrets();
     }

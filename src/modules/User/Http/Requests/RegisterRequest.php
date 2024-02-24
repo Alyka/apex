@@ -3,10 +3,9 @@
 namespace Modules\User\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
-use Modules\User\Models\User;
+use Illuminate\Validation\Rules\Password;
 
-class IndexRequest extends FormRequest
+class RegisterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -15,7 +14,7 @@ class IndexRequest extends FormRequest
      */
     public function authorize()
     {
-        return Auth::user()->can('viewAny', User::class);
+        return true;
     }
 
     /**
@@ -26,8 +25,13 @@ class IndexRequest extends FormRequest
     public function rules()
     {
         return [
-            'page' => 'nullable|numeric',
-            'limit' => 'nullable|numeric',
+            'name' => 'required|string',
+            'email' => 'required|email|unique:users',
+            'password' => [
+                'required',
+                new Password(5),
+                'confirmed'
+            ]
         ];
     }
 }

@@ -73,6 +73,8 @@ Run the following command to test the application:
 
 A postman collection is also bundled with the project. You can import this collection in postman and start your manual testing straight away. The file is located at `src/postman/Apex.postman_collection.json`
 
+> Notice the pre-request script on the collection ```pm.request.headers.add({key: 'X-Requested-With', value: 'XMLHttpRequest' });``` which automatically add the `X-Requested-With` header with a value of `XMLHttpRequest` in all requests. This header is a standard way in laravel to tell the application that the request is an AJAX request and a JSON response is expeted instead of a HTML response.
+
 ## **Connecting to the database from your computer:**
 
 You can connect to the database container from your host computer using a PostgreSQL database client.

@@ -9,6 +9,7 @@ use Modules\User\Contracts\UserService as UserServiceContract;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Modules\Role\Facades\RoleService;
+use Modules\Role\Models\Role;
 
 class UserService extends Service implements UserServiceContract
 {
@@ -47,6 +48,33 @@ class UserService extends Service implements UserServiceContract
         return $user;
     }
 
+    /**
+     * Register a new user.
+     *
+     * @param array $request
+     * @return Model
+     */
+    public function register(array $request): Model
+    {
+        DB::beginTransaction();
+
+        $request['password'] = Hash::make($request['password']);
+
+        $user = parent::store($request);
+
+        RoleService::assign([
+            'user_id' => $user->id,
+            'role' => Role::USER,
+        ]);
+
+        DB::commit();
+
+        return $user;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function update(array $request, int $id): Model
     {
         DB::beginTransaction();
