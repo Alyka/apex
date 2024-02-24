@@ -53,7 +53,7 @@ You may also create a new admin user by running this command and following the p
 
 `docker exec -it apex php artisan module:create-admin`
 
-This command does the same thing as creating a user manually except that, in this case, the role is automatically set to admin.
+This command does the same thing as creating a user manually except that, in this case, the role is automatically set to `admin`.
 
 ## Testing
 
@@ -157,10 +157,11 @@ public function index(IndexRequest $request): ResourceCollection
 
 Because every action in the controller follows this pattern, we use the **proxy pattern** to do it once and for all. After all, that's what design patterns are meant for; reusable solutions to common/reccurent problems that arise in software design and development.
 
-> We will not see the above code in the controller because every controller extends a base controller that performs the logic flexibly based on the module the controller belongs to. But then, we can still go ahead to explicitly define the action in our controller in case we want more controll or override the default behaviour. It will still work as normal. 
+> We will not see the above code in the controller because every controller extends a base controller that performs the logic flexibly based on the module to which the controller belongs. However, we can still go ahead to explicitly define the action in our controller in case we want more control or need to override the default behavior. It will still work in any case.
 
 Also notice that names of the form request and api resource classes used correspond with that of the controller action.
 
+|---------|---------|
 | Action: | `index` |
 | Form request class: | `IndexRequest` |
 | Api resource: | `IndexResource` |
@@ -233,6 +234,7 @@ public function update(UpdateRequest $request, int $id): JsonResource
 }
 ```
 
+|---------|---------|
 | Action: | `update` |
 | Form request class: | `UpdateRequest` |
 | Api resource: | `UpdateResource` |
