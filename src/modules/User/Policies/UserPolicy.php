@@ -41,7 +41,7 @@ class UserPolicy
      */
     public function view(?User $currentUser, User $user)
     {
-        return false;
+        return $currentUser->is($user);
     }
 
     /**
@@ -79,6 +79,9 @@ class UserPolicy
     {
         // If the user is admin, we will return true, else we will return null
         // so that other policies can apply accordingly.
-        return RoleService::is($user, Role::ADMIN) ?? null;
+        if (RoleService::is($user, Role::ADMIN))
+            return true;
+
+        return null;
     }
 }

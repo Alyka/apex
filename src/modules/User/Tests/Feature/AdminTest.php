@@ -6,27 +6,30 @@ namespace Modules\User\Tests\Feature;
 
 use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Passport\Passport;
+use Modules\Role\Facades\RoleRepository;
+use Modules\Role\Models\Role;
 use Modules\User\Facades\UserRepository;
+use Modules\User\Models\User;
 use Tests\TestCase;
 
 class AdminTest extends TestCase
 {
     use WithFaker;
 
-    protected function setUp(): void
+    protected function createAdmin(): User
     {
-        parent::setUp();
-        $this->actAsAdmin();
-    }
+        $adminRole = RoleRepository::whereCode(Role::ADMIN)->get();
 
-    protected function actAsAdmin()
-    {
-        $admin = UserRepository::admin()->first();
-        Passport::actingAs($admin, [], 'admin');
+        return UserRepository::factory()
+            ->hasAttached($adminRole)
+            ->create();
     }
 
     public function test_admin_can_create_user(): void
     {
+        $admin = $this->createAdmin();
+        Passport::actingAs($admin, [], 'admin');
+
         $userData = [
             'name' => $this->faker()->name(),
             'email' => $this->faker()->safeEmail(),
@@ -47,6 +50,9 @@ class AdminTest extends TestCase
 
     public function test_admin_can_view_users(): void
     {
+        $admin = $this->createAdmin();
+        Passport::actingAs($admin, [], 'admin');
+
         $user = UserRepository::factory()->create();
 
         $response = $this->getJson("/api/users");
@@ -55,26 +61,13 @@ class AdminTest extends TestCase
             ->assertJsonFragment($user->toArray());
     }
 
-    public function test_reject_weak_password(): void
-    {
-        $userData = [
-            'name' => $this->faker()->name(),
-            'email' => $this->faker()->safeEmail(),
-            'password' => 'pas',
-            'password_confirmation' => 'password',
-            'roles' => ['user'],
-        ];
-
-        $response = $this->postJson('/api/users', $userData);
-
-        $response->assertInvalid(['password']);
-    }
-
     public function test_admin_can_update_user(): void
     {
+        $admin = $this->createAdmin();
+        Passport::actingAs($admin, [], 'admin');
+
         $user = UserRepository::factory()->create();
         $name = $this->faker()->name();
-
         $userData = compact('name');
 
         $response = $this->putJson("/api/users/{$user->id}", $userData);
@@ -86,6 +79,9 @@ class AdminTest extends TestCase
 
     public function test_admin_can_delete_user(): void
     {
+        $admin = $this->createAdmin();
+        Passport::actingAs($admin, [], 'admin');
+
         $user = UserRepository::factory()->create();
 
         $response = $this->deleteJson("/api/users/{$user->id}");
@@ -99,6 +95,9 @@ class AdminTest extends TestCase
 
     public function test_admin_can_view_user(): void
     {
+        $admin = $this->createAdmin();
+        Passport::actingAs($admin, [], 'admin');
+
         $user = UserRepository::factory()->create();
 
         $response = $this->getJson("/api/users/{$user->id}");

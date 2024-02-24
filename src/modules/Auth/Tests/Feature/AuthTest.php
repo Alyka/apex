@@ -45,7 +45,7 @@ class AuthTest extends TestCase
 
         $response = $this->postJson('/api/login', $data);
 
-        $token = $response->json('data.token');
+        $token = $response->json('data.access_token');
 
         $this->assertIsString($token);
     }

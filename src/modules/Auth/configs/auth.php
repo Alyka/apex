@@ -4,8 +4,8 @@ use Modules\Role\Models\Role;
 use Modules\User\Models\User;
 
 return [
-    // Token expirty time in hours
-    'token_expiry_time' => 2,
+    // Token expiry time in seconds
+    'token_expiry_time' => 3600,
 
     'guards' => [
         'user' => [

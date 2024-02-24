@@ -14,4 +14,5 @@ use Modules\User\Http\Controllers\UserController;
 |
 */
 
-Route::apiResource('/users', UserController::class);
+Route::post('/users/register', [UserController::class, 'register']);
+Route::apiResource('/users', UserController::class)->middleware('auth:admin,user');
