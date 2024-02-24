@@ -59,7 +59,7 @@ This command does the same thing as creating a user manually except that, in thi
 
 Run the following command to test the application:
 
-`docker exec -it apex php artisan test --coverage`
+`docker exec -it apex php artisan test --testsuite Module --coverage`
 
 A postman collection is also bundled with the project. You can import this collection in postman and start your manual testing straight away. The file is located at `src/postman/Apex.postman_collection.json`
 
@@ -161,10 +161,9 @@ Because every action in the controller follows this pattern, we use the **proxy 
 
 Also notice that names of the form request and api resource classes used correspond with that of the controller action.
 
-|---------|---------|
-| Action: | `index` |
-| Form request class: | `IndexRequest` |
-| Api resource: | `IndexResource` |
+- Action: `index`
+- Form request class: `IndexRequest`
+- Api resource: `IndexResource`
 
 #### The service
 
@@ -234,10 +233,9 @@ public function update(UpdateRequest $request, int $id): JsonResource
 }
 ```
 
-|---------|---------|
-| Action: | `update` |
-| Form request class: | `UpdateRequest` |
-| Api resource: | `UpdateResource` |
+- Action: `update`
+- Form request class: `UpdateRequest`
+- Api resource: `IUpdateResource`
 
 
 #### The service
