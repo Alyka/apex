@@ -12,13 +12,13 @@ This document provides a comprehensive overview and installation guide for the A
 
 ## **Technologies used:**
 
-* PHP: 8.2
-* Laravel: 10
-* Postgres: latest
-* Docker: 24.0.2
-* Docker Compose: 2.18.1
-* Nginx: latest
-* Supervisor: latest
+* PHP: `8.2`
+* Laravel: `10`
+* Postgres: `latest`
+* Docker: `24.0.2`
+* Docker Compose: `2.18.1`
+* Nginx: `latest`
+* Supervisor: `latest`
 
 ### **Other extensions and utilities:**
 
@@ -29,7 +29,7 @@ This document provides a comprehensive overview and installation guide for the A
 1. Make sure Docker and Docker Compose are installed on your system.
 2. Clone the project from GitHub:  
 
-`git clone [https://github.com/Alyka/apex.git](https://github.com/Alyka/apex.git) && cd apex`
+`git clone https://github.com/Alyka/apex.git && cd apex`
 
 3. Run the deployment script: 
 
