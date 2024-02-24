@@ -7,7 +7,7 @@ This document provides a comprehensive overview and installation guide for the A
 * **Modern Stack:** Utilizes Laravel 10, Postgres, Docker, and Nginx for a robust and scalable architecture.
 * **Modular Design:** Organized into reusable modules for enhanced maintainability and flexibility.
 * **Clear Separation of Concerns:** Employs Service Repository pattern and Proxy pattern for efficient code organization.
-* **Robust Testing:** Includes automated and manual testing tools for ensuring application quality.
+* **Robust Testing:** Includes automated and manual testing tools.
 * **Detailed Documentation:** This document covers installation, architecture, testing, database connection, and folder structure.
 
 ## **Technologies used:**
@@ -27,21 +27,33 @@ This document provides a comprehensive overview and installation guide for the A
 ## Installation:
 
 1. Make sure Docker and Docker Compose are installed on your system.
-2. Clone the project from GitHub:  `git clone `[`https://github.com/Alyka/apex.git`](https://github.com/Alyka/apex.git)` && cd apex`
-3. Build the images and start the containers:  `docker compose up --build -d`
-4. The application should be live at `localhost:8080`.
+2. Clone the project from GitHub:  
+
+`git clone [https://github.com/Alyka/apex.git](https://github.com/Alyka/apex.git) && cd apex`
+
+3. Run the deployment script: 
+
+`bash deploy.sh`
+
+Then wait till the setup is completed. 
+
+> You will need to keep the terminal open to keep the application running. This is because our script runs the containers in the foreground, not in detached mode. To change this behavior and run the containers in detached mode, edit the `deploy.sh` script accordingly. However, then you may not be able to know when the setup actually gets completed or when something goes wrong.
+
+4. The application should be live at 
+
+`localhost:8080`
 
 During installation, a default admin user is created for you, for testing on postman, with the following details:
 
 * **Name:** Admin
-* **Email:** [admin@example.com](mailto\:admin@example.com)
+* **Email:** admin@example.com
 * **Password:** admin
 
 You may also create a new admin user by running this command and following the prompt:
 
 `docker exec -it apex php artisan module:create-admin`
 
-This command does the same thing as manually creating a user via postman except that the command sets the role to admin automatically.
+This command does the same thing as manually creating a user manually except that, in this case, the role is automatically set to admin.
 
 ## Testing
 
@@ -49,7 +61,7 @@ Run the following command to test the application:
 
 `docker exec -it apex php artisan test`
 
-A postman collection is also bundled with the project. You can import this collection in postman and start your manual testing straight away. This file is located at `src/postman/Apex.postman_collection.json`
+A postman collection is also bundled with the project. You can import this collection in postman and start your manual testing straight away. The file is located at `src/postman/Apex.postman_collection.json`
 
 ## **Connecting to the database from your computer:**
 
@@ -88,14 +100,18 @@ You can connect to the database container from your host computer using a Postgr
 
 ## Module
 
-Each module uses a similar folder structure to a full Laravel app to ensure a consistent and familiar organization.  Each module has its own `controllers`, `models`, `policies`, `form requests`, `service providers`, `API resources`, `services`, `repositories`, `config`, `routes`, `migrations`, `seeders`, `factories`,  `tests`, `events`, `listeners` and even `custom artisan commands` . There are other folders like `contracts` and `facades.` which contain contracts and facades classes that provide an abstraction layer, a way to interact with components of the application at a higher level to promot **loose coupling**.
+Each module uses a similar folder structure to a full Laravel app to maintain a consistent and familiar organization.  Each module has its own `controllers`, `models`, `policies`, `form requests`, `service providers`, `API resources`, `services`, `repositories`, `config`, `routes`, `migrations`, `seeders`, `factories`,  `tests`, `events`, `listeners` and even `custom artisan commands` . 
+
+There are other folders like `contracts` and `facades.` which contain contracts and facades classes that provide an abstraction layer, a way to interact with components of the application at a higher level to promot **loose coupling**. You may examine the code for more details.
 
 ### Interaction Flow:
 
 * A request is received by the controller.
-* The controller automatically validates the input using a form request class corresponding to the targeted controller action. For example, a request to the controller action `UserController@index` will, by default, utilize a form request class named `IndexRequest.php` located in the `./Http/Requests/` directory of the `User` module.
+* The controller automatically validates the inputs using a form request class corresponding to the targeted controller action. For example, a request to the controller action `UserController@index` will, by default, utilize a form request class named `IndexRequest.php` located in the `./Http/Requests/` directory of the `User` module.
 * Upon successful validation of the request, the controller forwards the call to the service layer to execute the associated business logic.
 * The service layer, in turn, communicates with the repository for necessary data operations.
 * If no exceptions are encountered, the service layer returns the response back to the controller.
 * The controller then transforms the data using an API resource class matching the name of the targeted controller action. Specifically, for a request to the controller action `UserController@index`, the application will use an API resource class named `IndexResource.php` located in the `./Http/Responses/` directory of the user module. In cases where the action is named `index`, the application automatically knows to return a collection by calling the collection method of the resource class. Simply put, if the action is named `index`, the application will return `IndexResource::collection($databaseCollection)` otherwise, it returns `new IndexResource($databaseModel)`.
 * The final transformed response is sent back to the client.
+
+In addition to this built-in behavior, we can still define our actions in the controller to override this behavior for that particular controller action. Everything will still work fine.
