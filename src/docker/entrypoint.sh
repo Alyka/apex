@@ -2,6 +2,7 @@
 
 composer install --no-dev --optimize-autoloader
 
+php artisan key:generate --force
 php artisan migrate
 php artisan passport:install --force
 
