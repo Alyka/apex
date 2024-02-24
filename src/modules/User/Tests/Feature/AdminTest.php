@@ -45,6 +45,16 @@ class AdminTest extends TestCase
         $this->assertTrue($userExists);
     }
 
+    public function test_admin_can_view_users(): void
+    {
+        $user = UserRepository::factory()->create();
+
+        $response = $this->getJson("/api/users");
+
+        $response->assertStatus(200)
+            ->assertJsonFragment($user->toArray());
+    }
+
     public function test_reject_weak_password(): void
     {
         $userData = [

@@ -14,4 +14,5 @@ use Modules\Auth\Http\Controllers\AuthController;
 |
 */
 
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:user,admin');
 Route::post('/login', [AuthController::class, 'login']);

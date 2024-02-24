@@ -20,6 +20,10 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN docker-php-ext-install gd zip pdo pdo_pgsql
 
+# Install xdebug
+RUN pecl install xdebug \
+    && docker-php-ext-enable xdebug
+
 # Set the working directory in the container
 WORKDIR /var/www/html
 

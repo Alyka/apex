@@ -22,7 +22,7 @@ This document provides a comprehensive overview and installation guide for the A
 
 ### **Other extensions and utilities:**
 
-* zip, unzip, curl, libzip-dev, libpng-dev, libssl-dev, libpq-dev, gd, pdo, pdo\_pgsql
+* xdebug (for reporting test coverage), zip, unzip, curl, libzip-dev, libpng-dev, libssl-dev, libpq-dev, gd, pdo, pdo_pgsql
 
 ## Installation:
 
@@ -53,13 +53,13 @@ You may also create a new admin user by running this command and following the p
 
 `docker exec -it apex php artisan module:create-admin`
 
-This command does the same thing as manually creating a user manually except that, in this case, the role is automatically set to admin.
+This command does the same thing as creating a user manually except that, in this case, the role is automatically set to admin.
 
 ## Testing
 
 Run the following command to test the application:
 
-`docker exec -it apex php artisan test`
+`docker exec -it apex php artisan test --coverage`
 
 A postman collection is also bundled with the project. You can import this collection in postman and start your manual testing straight away. The file is located at `src/postman/Apex.postman_collection.json`
 
@@ -104,14 +104,157 @@ Each module uses a similar folder structure to a full Laravel app to maintain a 
 
 There are other folders like `contracts` and `facades.` which contain contracts and facades classes that provide an abstraction layer, a way to interact with components of the application at a higher level to promot **loose coupling**. You may examine the code for more details.
 
-### Interaction Flow:
+## Interaction Flow:
 
 * A request is received by the controller.
-* The controller automatically validates the inputs using a form request class corresponding to the targeted controller action. For example, a request to the controller action `UserController@index` will, by default, utilize a form request class named `IndexRequest.php` located in the `./Http/Requests/` directory of the `User` module.
+* The controller automatically validates the inputs using a form request class corresponding to the targeted controller action.
 * Upon successful validation of the request, the controller forwards the call to the service layer to execute the associated business logic.
-* The service layer, in turn, communicates with the repository for necessary data operations.
+* The service layer, in turn, communicates with the repository for necessary data operations. 
 * If no exceptions are encountered, the service layer returns the response back to the controller.
-* The controller then transforms the data using an API resource class matching the name of the targeted controller action. Specifically, for a request to the controller action `UserController@index`, the application will use an API resource class named `IndexResource.php` located in the `./Http/Responses/` directory of the user module. In cases where the action is named `index`, the application automatically knows to return a collection by calling the collection method of the resource class. Simply put, if the action is named `index`, the application will return `IndexResource::collection($databaseCollection)` otherwise, it returns `new IndexResource($databaseModel)`.
+* The controller then transforms the data using an API resource class matching the name of the targeted controller action.
 * The final transformed response is sent back to the client.
 
-In addition to this built-in behavior, we can still define our actions in the controller to override this behavior for that particular controller action. Everything will still work fine.
+
+### Example
+
+Let's examine a typical request where we want to get a paginated list of all users.
+
+`GET /users?limit=15`
+
+#### The route
+The route will look like this:
+
+```php
+Route::get('/users', [UserController::class, 'index']);
+```
+
+#### The controller
+
+This is what the controller does for us out-of-the-box and we don't have to worry writing it.
+
+```php
+use Illuminate\Http\Resources\Json\ResourceCollection;
+use Modules\User\Http\Requests\IndexRequest;
+use Modules\User\Http\Resources\IndexResource;
+
+/**
+ * Display all users.
+ *
+ * @param IndexRequest $request
+ * @return ResourceCollection
+ */
+public function index(IndexRequest $request): ResourceCollection
+{
+    $request = $request->validated();
+
+    $users = $this->service->index($request);
+
+    // The action name 'index' tells the controller that a collection of resources is expected
+    // so it transforms the resource to a collection.
+    return IndexResource::collection($users);
+}
+```
+
+Because every action in the controller follows this pattern, we use the **proxy pattern** to do it once and for all. After all, that's what design patterns are meant for; reusable solutions to common/reccurent problems that arise in software design and development.
+
+> We will not see the above code in the controller because every controller extends a base controller that performs the logic flexibly based on the module the controller belongs to. But then, we can still go ahead to explicitly define the action in our controller in case we want more controll or override the default behaviour. It will still work as normal. 
+
+Also notice that names of the form request and api resource classes used correspond with that of the controller action.
+
+| Action: | `index` |
+| Form request class: | `IndexRequest` |
+| Api resource: | `IndexResource` |
+
+#### The service
+
+Continuing with the same request flow above, this is what the service class should look like:
+
+```php
+use Illuminate\Pagination\LengthAwarePaginator;
+
+/**
+ * Display a paginated list of all users.
+ *
+ * @param array $request
+ * @return LengthAwarePaginator
+ */
+public function index(array $request): LengthAwarePaginator
+{
+    $this->repository->latest()->paginate($request['limit']);
+}
+```
+
+> But then again, we may not see this code directly in the service class because all our service classes extend a base service class that defines it for us.
+
+#### The repository
+
+As we can see in the service class implementation above, the repository called the same methods as a typical eloquent model. That is because we also used the **proxy pattern** here to forward all calls the repository methods to its underlying model. So we can confidently use the repository the same way we use a laravel eloquent model.
+
+
+
+### Another example
+
+Assuming we have another type of request where we want to update a specified user:
+
+`PUT|PATCH /users/1?name=Matthew`
+
+The route will look like this:
+
+#### The route
+
+```php
+Route::post('/users/{id}', [UserController::class, 'update']);
+```
+
+#### The controller
+
+This is what the controller does for us out-of-the-box and we don't have to worry writing it.
+
+```php
+use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\User\Http\Requests\UpdateRequest;
+use Modules\User\Http\Resources\UpdateResource;
+
+/**
+ * Update the specified user.
+ *
+ * @param UpdateRequest $request
+ * @param int $id
+ * @return JsonResource
+ */
+public function update(UpdateRequest $request, int $id): JsonResource
+{
+    $request = $request->validated();
+
+    $updatedUser = $this->service->update($request, $id);
+
+    // Notice how a single resource is returned here and not a collection.
+    return new UpdateResource($updatedUser);
+}
+```
+
+| Action: | `update` |
+| Form request class: | `UpdateRequest` |
+| Api resource: | `UpdateResource` |
+
+
+#### The service
+
+```php
+/**
+ * Update the specified user.
+ *
+ * @param array $request
+ * @param int $id
+ * @return Model
+ */
+public function update(array $request, int $id): Model
+{
+    $model = $this->repository->findOrFail($id);
+    $model->update($request);
+
+    return $model->refresh();
+}
+```
+
+If we have more route parameters, they will all be passed as extra arguments to the service method.
