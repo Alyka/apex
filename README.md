@@ -39,11 +39,15 @@ This document provides a comprehensive overview and installation guide for the A
 1. Make sure Docker and Docker Compose are installed on your system.
 2. Clone the project from GitHub:  
 
-`git clone https://github.com/Alyka/apex.git && cd apex`
+```bash
+git clone https://github.com/Alyka/apex.git && cd apex
+```
 
 3. Run the deployment script: 
 
-`bash deploy.sh`
+```bash
+bash deploy.sh
+```
 
 Then wait till the setup is completed. 
 
@@ -51,7 +55,9 @@ Then wait till the setup is completed.
 
 4. The application should be live at 
 
-`localhost:8080`
+```bash
+localhost:8080
+```
 
 During installation, a default admin user is created for you, for testing on postman, with the following details:
 
@@ -61,7 +67,9 @@ During installation, a default admin user is created for you, for testing on pos
 
 You may also create a new admin user by running this command and following the prompt:
 
-`docker exec -it apex php artisan module:create-admin`
+```bash
+docker exec -it apex php artisan module:create-admin
+```
 
 This command does the same thing as creating a user manually except that, in this case, the role is automatically set to `admin`.
 
@@ -69,11 +77,13 @@ This command does the same thing as creating a user manually except that, in thi
 
 Run the following command to test the application:
 
-`docker exec -it apex php artisan test --coverage --testsuite Module`
+```bash
+docker exec -it apex php artisan test --coverage --testsuite Module
+```
 
 A postman collection is also bundled with the project. You can import this collection in postman and start your manual testing straight away. The file is located at `src/postman/Apex.postman_collection.json`
 
-> Notice the pre-request script on the collection ```pm.request.headers.add({key: 'X-Requested-With', value: 'XMLHttpRequest' });``` which automatically add the `X-Requested-With` header with a value of `XMLHttpRequest` in all requests. This header is a standard way in laravel to tell the application that the request is an AJAX request and a JSON response is expeted instead of a HTML response.
+> Notice the pre-request script on the collection `pm.request.headers.add({key: 'X-Requested-With', value: 'XMLHttpRequest' });` which automatically add the `X-Requested-With` header with a value of `XMLHttpRequest` in all requests. This header is a standard way in laravel to tell the application that the request is an AJAX request and a JSON response is expeted instead of a HTML response.
 
 ## **Connecting to the database from your computer:**
 
