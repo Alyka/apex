@@ -7,8 +7,6 @@ services:
         image: matthewalika/laravel-pgsql
         container_name: apex
         restart: unless-stopped
-        ports:
-            - "9001:9000"
         entrypoint:
             - "/bin/bash"
             - "./src/docker/entrypoint.sh"
