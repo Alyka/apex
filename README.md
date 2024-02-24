@@ -23,15 +23,15 @@ This document provides a comprehensive overview and installation guide for the A
 ### **Other extensions and utilities:**
 
 * xdebug (for reporting test coverage), 
-* zip, 
-* unzip, 
-* curl, 
-* libzip-dev, 
-* libpng-dev, 
-* libssl-dev, 
-* libpq-dev, 
-* gd, 
-* pdo, 
+* zip
+* unzip
+* curl
+* libzip-dev
+* libpng-dev
+* libssl-dev
+* libpq-dev
+* gd
+* pdo
 * pdo_pgsql
 
 ## Installation:
