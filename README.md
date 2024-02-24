@@ -190,7 +190,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
  */
 public function index(array $request): LengthAwarePaginator
 {
-    $this->repository->latest()->paginate($request['limit']);
+    return $this->repository->latest()->paginate($request['limit']);
 }
 ```
 
