@@ -213,7 +213,7 @@ The route will look like this:
 #### The route
 
 ```php
-Route::post('/users/{id}', [UserController::class, 'update']);
+Route::match(['PUT', 'PATCH'], '/users/{id}', [UserController::class, 'update']);
 ```
 
 #### The controller
