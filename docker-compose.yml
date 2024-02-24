@@ -4,7 +4,6 @@ services:
         build:
             context: .
             dockerfile: ./src/docker/Dockerfile
-        image: matthewalika/laravel-pgsql
         container_name: apex
         restart: unless-stopped
         entrypoint:
@@ -12,6 +11,7 @@ services:
             - "./src/docker/entrypoint.sh"
         volumes:
             - ./:/var/www/html
+            - ./src/docker/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
         networks:
             - network
         depends_on:
