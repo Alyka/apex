@@ -1,6 +1,6 @@
 #!/bin/sh
 
-composer install --no-dev --optimize-autoloader
+composer install
 
 php artisan migrate
 php artisan passport:install --force
