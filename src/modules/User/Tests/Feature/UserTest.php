@@ -43,9 +43,8 @@ class UserTest extends TestCase
             'password_confirmation' => 'password'
         ];
 
-        $response = $this->postJson('/api/users/register', $userData);
-
-        $response->assertStatus(201);
+        $this->postJson('/api/users/register', $userData)
+            ->assertStatus(201);
     }
 
     public function test_user_cannot_register_with_existing_email(): void
@@ -57,13 +56,12 @@ class UserTest extends TestCase
             'password_confirmation' => 'password'
         ];
 
-        $response = $this->postJson('/api/users/register', $userData);
+        $this->postJson('/api/users/register', $userData)
+            ->assertStatus(201);
 
-        $response->assertStatus(201);
-
-        $response = $this->postJson('/api/users/register', $userData);
-
-        $response->assertInvalid(['email']);
+        $this->postJson('/api/users/register', $userData)
+            ->assertStatus(422)
+            ->assertInvalid(['email']);
     }
 
     public function test_rejects_weak_password_during_registration(): void
@@ -75,9 +73,8 @@ class UserTest extends TestCase
             'password_confirmation' => 'pas'
         ];
 
-        $response = $this->postJson('/api/users/register', $userData);
-
-        $response->assertInvalid(['password']);
+        $this->postJson('/api/users/register', $userData)
+            ->assertInvalid(['password']);
     }
 
     public function test_user_can_view_self(): void
@@ -86,9 +83,8 @@ class UserTest extends TestCase
 
         Passport::actingAs($user, [], 'user');
 
-        $response = $this->getJson("/api/users/{$user->id}");
-
-        $response->assertStatus(200)
+        $this->getJson("/api/users/{$user->id}")
+            ->assertStatus(200)
             ->assertJsonFragment($user->toArray());
     }
 
@@ -99,9 +95,8 @@ class UserTest extends TestCase
 
         Passport::actingAs($user1, [], 'user');
 
-        $response = $this->getJson("/api/users/{$user2->id}");
-
-        $response->assertStatus(403);
+        $this->getJson("/api/users/{$user2->id}")
+            ->assertStatus(403);
     }
 
     public function test_user_cannot_create_another_user(): void
@@ -118,9 +113,8 @@ class UserTest extends TestCase
             'roles' => ['user'],
         ];
 
-        $response = $this->postJson('/api/users', $userData);
-
-        $response->assertStatus(403);
+        $this->postJson('/api/users', $userData)
+            ->assertStatus(403);
     }
 
     public function test_user_cannot_update_self(): void
@@ -131,9 +125,8 @@ class UserTest extends TestCase
 
         $userData = ['name' => 'New name'];
 
-        $response = $this->putJson("/api/users/{$user->id}", $userData);
-
-        $response->assertStatus(403);
+        $this->putJson("/api/users/{$user->id}", $userData)
+            ->assertStatus(403);
     }
 
     public function test_user_cannot_update_another_user(): void
@@ -145,9 +138,8 @@ class UserTest extends TestCase
 
         $userData = ['name' => 'New name'];
 
-        $response = $this->putJson("/api/users/{$user2->id}", $userData);
-
-        $response->assertStatus(403);
+        $this->putJson("/api/users/{$user2->id}", $userData)
+            ->assertStatus(403);
     }
 
     public function test_user_cannot_delete_self(): void
@@ -156,9 +148,8 @@ class UserTest extends TestCase
 
         Passport::actingAs($user, [], 'user');
 
-        $response = $this->deleteJson("/api/users/{$user->id}");
-
-        $response->assertStatus(403);
+        $this->deleteJson("/api/users/{$user->id}")
+            ->assertStatus(403);
     }
 
     public function test_user_cannot_delete_another_user(): void
@@ -168,8 +159,7 @@ class UserTest extends TestCase
 
         Passport::actingAs($user1, [], 'user');
 
-        $response = $this->deleteJson("/api/users/{$user2->id}");
-
-        $response->assertStatus(403);
+        $this->deleteJson("/api/users/{$user2->id}")
+            ->assertStatus(403);
     }
 }

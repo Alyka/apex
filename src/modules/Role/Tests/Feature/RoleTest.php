@@ -41,9 +41,8 @@ class RoleTest extends TestCase
 
         $role = RoleRepository::latest()->first();
 
-        $response = $this->getJson("/api/roles");
-
-        $response->assertStatus(200)
+        $this->getJson("/api/roles")
+            ->assertStatus(200)
             ->assertJsonFragment($role->toArray());
     }
 
@@ -60,8 +59,7 @@ class RoleTest extends TestCase
 
         $data = ['roles' => [Role::USER]];
 
-        $response = $this->putJson("/api/users/{$user->id}", $data);
-
-        $roles = $response->assertJsonPath('data.roles', [Role::USER]);
+        $this->putJson("/api/users/{$user->id}", $data)
+            ->assertJsonPath('data.roles', [Role::USER]);
     }
 }

@@ -27,9 +27,8 @@ class AuthTest extends TestCase
 
         $data = compact('email', 'password');
 
-        $response = $this->postJson('/api/login', $data);
-
-        $response->assertStatus(200);
+        $this->postJson('/api/login', $data)
+            ->assertStatus(200);
     }
 
     public function test_token_is_returned_on_successful_login(): void
@@ -60,17 +59,15 @@ class AuthTest extends TestCase
             'password' => 'wrong password',
         ];
 
-        $response = $this->postJson('/api/login', $data);
-
-        $response->assertInvalid(['login']);
+        $this->postJson('/api/login', $data)
+            ->assertInvalid(['login']);
     }
 
     public function test_user_can_logout(): void
     {
         $this->actAsAdmin();
 
-        $response = $this->postJson('/api/logout');
-
-        $response->assertStatus(200);
+        $this->postJson('/api/logout')
+            ->assertStatus(200);
     }
 }

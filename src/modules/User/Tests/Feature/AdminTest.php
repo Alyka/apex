@@ -38,14 +38,12 @@ class AdminTest extends TestCase
             'roles' => ['user'],
         ];
 
-        $response = $this->postJson('/api/users', $userData);
+        $this->postJson('/api/users', $userData)
+                        ->assertStatus(201);
 
-        $response->assertStatus(201);
-
-        $newUserId = $response->json('data.id');
-        $userExists = UserRepository::whereKey($newUserId)->exists();
-
-        $this->assertTrue($userExists);
+        $this->assertDatabaseHas('users', [
+            'email' => $userData['email'],
+        ]);
     }
 
     public function test_admin_can_view_users(): void
@@ -55,9 +53,8 @@ class AdminTest extends TestCase
 
         $user = UserRepository::factory()->create();
 
-        $response = $this->getJson("/api/users");
-
-        $response->assertStatus(200)
+        $this->getJson("/api/users")
+            ->assertStatus(200)
             ->assertJsonFragment($user->toArray());
     }
 
@@ -70,11 +67,9 @@ class AdminTest extends TestCase
         $name = $this->faker()->name();
         $userData = compact('name');
 
-        $response = $this->putJson("/api/users/{$user->id}", $userData);
-
-        $response->assertStatus(200);
-
-        $response->assertJsonPath('data.name', $name);
+        $this->putJson("/api/users/{$user->id}", $userData)
+            ->assertStatus(200)
+            ->assertJsonPath('data.name', $name);
     }
 
     public function test_admin_can_delete_user(): void
@@ -84,13 +79,10 @@ class AdminTest extends TestCase
 
         $user = UserRepository::factory()->create();
 
-        $response = $this->deleteJson("/api/users/{$user->id}");
+        $this->deleteJson("/api/users/{$user->id}")
+            ->assertStatus(200);
 
-        $response->assertStatus(200);
-
-        $userStillExists = UserRepository::whereKey($user->id)->exists();
-
-        $this->assertFalse($userStillExists);
+        $this->assertModelMissing($user);
     }
 
     public function test_admin_can_view_user(): void
@@ -100,9 +92,8 @@ class AdminTest extends TestCase
 
         $user = UserRepository::factory()->create();
 
-        $response = $this->getJson("/api/users/{$user->id}");
-
-        $response->assertStatus(200)
+        $this->getJson("/api/users/{$user->id}")
+            ->assertStatus(200)
             ->assertJsonFragment($user->toArray());
     }
 
