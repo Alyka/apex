@@ -6,12 +6,21 @@ namespace Modules\User\Tests\Feature;
 
 use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Passport\Passport;
+use Modules\User\Database\Seeders\UserTableSeeder;
 use Modules\User\Facades\UserRepository;
 use Tests\TestCase;
 
 class UserTest extends TestCase
 {
     use WithFaker;
+
+    public function test_users_table_seeding()
+    {
+        $count = UserRepository::count() + 10;
+
+        $this->seed(UserTableSeeder::class)
+            ->assertDatabaseCount('users', $count);
+    }
 
     public function test_new_user_can_register(): void
     {
@@ -25,6 +34,24 @@ class UserTest extends TestCase
         $response = $this->postJson('/api/users/register', $userData);
 
         $response->assertStatus(201);
+    }
+
+    public function test_user_cannot_register_with_existing_email(): void
+    {
+        $userData = [
+            'name' => $this->faker()->name(),
+            'email' => $this->faker()->safeEmail(),
+            'password' => 'password',
+            'password_confirmation' => 'password'
+        ];
+
+        $response = $this->postJson('/api/users/register', $userData);
+
+        $response->assertStatus(201);
+
+        $response = $this->postJson('/api/users/register', $userData);
+
+        $response->assertInvalid(['email']);
     }
 
     public function test_rejects_weak_password_during_registration(): void

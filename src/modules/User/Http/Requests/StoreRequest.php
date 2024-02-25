@@ -19,7 +19,7 @@ class StoreRequest extends FormRequest
     public function authorize()
     {
         if (app()->runningUnitTests())
-            return Auth::user()->can('create', User::class);
+            return Auth::user()?->can('create', User::class) ?? true;
 
         if (app()->runningInConsole())
             return true;

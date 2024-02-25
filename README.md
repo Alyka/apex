@@ -78,7 +78,7 @@ This command does the same thing as creating a user manually except that, in thi
 Run the following command to test the application:
 
 ```bash
-docker exec -it apex php artisan test --coverage --testsuite Module
+docker exec -it apex php artisan test --coverage
 ```
 
 A postman collection is also bundled with the project. You can import this collection in postman and start your manual testing straight away. The file is located at `src/postman/Apex.postman_collection.json`

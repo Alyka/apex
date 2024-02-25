@@ -77,8 +77,6 @@ class UserPolicy
      */
     public function before($user, $ability)
     {
-        // If the user is admin, we will return true, else we will return null
-        // so that other policies can apply accordingly.
         if (RoleService::is($user, Role::ADMIN))
             return true;
 
