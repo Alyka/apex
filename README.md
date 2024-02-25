@@ -51,7 +51,7 @@ bash deploy.sh
 
 Then wait till the setup is completed. 
 
-> You will need to keep the terminal open to keep the application running. This is because our script runs the containers in the foreground, not in detached mode. To change this behavior and run the containers in detached mode, edit the `deploy.sh` script accordingly. However, then you may not be able to know when the setup actually gets completed or when something goes wrong.
+> You will have to leave the terminal open to keep the application running. This is because the script runs the containers in the foreground, not in detached mode. So open another terminal to run the test. If you must change this behavior and run the containers in detached mode, edit the `deploy.sh` script accordingly. However, then you may not be able to know when the setup actually gets completed or when something goes wrong.
 
 4. The application should be live at 
 
@@ -75,11 +75,13 @@ This command does the same thing as creating a user manually except that, in thi
 
 ## Testing
 
-Run the following command to test the application:
+Run the following command to test the application. A coverage report will also be displayed (not less than 88% total coverage is expected).
 
 ```bash
 docker exec -it apex php artisan test --coverage
 ```
+
+The abo
 
 A postman collection is also bundled with the project. You can import this collection in postman and start your manual testing straight away. The file is located at `src/postman/Apex.postman_collection.json`
 

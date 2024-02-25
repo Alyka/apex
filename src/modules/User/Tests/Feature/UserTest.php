@@ -6,13 +6,25 @@ namespace Modules\User\Tests\Feature;
 
 use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Passport\Passport;
+use Modules\Role\Facades\RoleRepository;
+use Modules\Role\Models\Role;
 use Modules\User\Database\Seeders\UserTableSeeder;
 use Modules\User\Facades\UserRepository;
+use Modules\User\Models\User;
 use Tests\TestCase;
 
 class UserTest extends TestCase
 {
     use WithFaker;
+
+    protected function createUser(): User
+    {
+        $userRole = RoleRepository::whereCode(Role::USER)->get();
+
+        return UserRepository::factory()
+            ->hasAttached($userRole)
+            ->create();
+    }
 
     public function test_users_table_seeding()
     {
@@ -70,7 +82,7 @@ class UserTest extends TestCase
 
     public function test_user_can_view_self(): void
     {
-        $user = UserRepository::factory()->create();
+        $user = $this->createUser();
 
         Passport::actingAs($user, [], 'user');
 
@@ -82,8 +94,8 @@ class UserTest extends TestCase
 
     public function test_user_cannot_view_another_user(): void
     {
-        $user1 = UserRepository::factory()->create();
-        $user2 = UserRepository::factory()->create();
+        $user1 = $this->createUser();
+        $user2 = $this->createUser();
 
         Passport::actingAs($user1, [], 'user');
 
@@ -94,7 +106,8 @@ class UserTest extends TestCase
 
     public function test_user_cannot_create_another_user(): void
     {
-        $user = UserRepository::factory()->create();
+        $user = $this->createUser();
+
         Passport::actingAs($user, [], 'user');
 
         $userData = [
@@ -112,7 +125,7 @@ class UserTest extends TestCase
 
     public function test_user_cannot_update_self(): void
     {
-        $user = UserRepository::factory()->create();
+        $user = $this->createUser();
 
         Passport::actingAs($user, [], 'user');
 
@@ -125,8 +138,8 @@ class UserTest extends TestCase
 
     public function test_user_cannot_update_another_user(): void
     {
-        $user1 = UserRepository::factory()->create();
-        $user2 = UserRepository::factory()->create();
+        $user1 = $this->createUser();
+        $user2 = $this->createUser();
 
         Passport::actingAs($user1, [], 'user');
 
@@ -139,7 +152,7 @@ class UserTest extends TestCase
 
     public function test_user_cannot_delete_self(): void
     {
-        $user = UserRepository::factory()->create();
+        $user = $this->createUser();
 
         Passport::actingAs($user, [], 'user');
 
@@ -150,8 +163,8 @@ class UserTest extends TestCase
 
     public function test_user_cannot_delete_another_user(): void
     {
-        $user1 = UserRepository::factory()->create();
-        $user2 = UserRepository::factory()->create();
+        $user1 = $this->createUser();
+        $user2 = $this->createUser();
 
         Passport::actingAs($user1, [], 'user');
 
