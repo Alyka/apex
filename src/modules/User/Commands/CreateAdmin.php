@@ -45,7 +45,7 @@ class CreateAdmin extends Command
         Request::merge([
             'name' => $this->ask('Enter your name'),
             'email' => $this->ask('Enter your email'),
-            'password' => $this->secret('Enter password'),
+            'password' => $this->secret('Choose password'),
             'password_confirmation' => $this->secret('Confirm password'),
             'roles' => [Role::ADMIN]
         ]);
@@ -61,7 +61,10 @@ class CreateAdmin extends Command
 
         $this->info('User created successfully.');
 
-        $this->table(['name', 'email', 'id'], [$admin->toArray()]);
+        $tableData = $admin->toArray();
+        unset($tableData['id']);
+
+        $this->table(['name', 'email'], [$tableData]);
 
         return 0;
     }

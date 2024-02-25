@@ -11,8 +11,8 @@
         <testsuite name="Feature">
             <directory>tests/Feature</directory>
         </testsuite>
-        <testsuite name="Module">
-            <directory>src/modules</directory>
+        <testsuite name="Apex">
+            <directory>src</directory>
         </testsuite>
     </testsuites>
     <source>

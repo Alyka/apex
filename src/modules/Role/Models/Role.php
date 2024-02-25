@@ -21,6 +21,11 @@ class Role extends Model
         'code',
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
+
     /**
      * Create a new factory instance for the model.
      *

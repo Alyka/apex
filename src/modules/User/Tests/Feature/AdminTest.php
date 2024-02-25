@@ -105,4 +105,22 @@ class AdminTest extends TestCase
         $response->assertStatus(200)
             ->assertJsonFragment($user->toArray());
     }
+
+    public function test_can_create_admin_via_cli()
+    {
+        $name = $this->faker->name();
+        $email = $this->faker->email();
+
+        $this->artisan('module:create-admin')
+            ->expectsQuestion('Enter your name', $name)
+            ->expectsQuestion('Enter your email', $email)
+            ->expectsQuestion('Choose password', 'password')
+            ->expectsQuestion('Confirm password', 'password')
+            ->expectsTable([
+                'name',
+                'email',
+            ], [
+                [$name, $email]
+            ]);
+    }
 }

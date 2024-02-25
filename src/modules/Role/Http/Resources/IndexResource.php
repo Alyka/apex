@@ -1,10 +1,10 @@
 <?php
 
-namespace Core\Http\Resources;
+namespace Modules\Role\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ErrorResource extends JsonResource
+class IndexResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,6 +14,10 @@ class ErrorResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [];
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'code' => $this->code,
+        ];
     }
 }

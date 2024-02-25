@@ -3,6 +3,8 @@
 namespace Modules\Role\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
+use Modules\Role\Models\Role;
 
 class IndexRequest extends FormRequest
 {
@@ -13,7 +15,7 @@ class IndexRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return Auth::user()->can('viewAny', Role::class);
     }
 
     /**
