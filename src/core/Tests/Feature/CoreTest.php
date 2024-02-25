@@ -13,6 +13,7 @@ class CoreTest extends TestCase
 
     public function test_modules_are_auto_configurable()
     {
-        $this->artisan('module:config')->assertSuccessful();
+        $this->artisan('module:config')
+            ->assertSuccessful();
     }
 }

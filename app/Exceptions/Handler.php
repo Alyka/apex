@@ -34,6 +34,8 @@ class Handler extends ExceptionHandler
         $this->renderable(function (Throwable $e, Request $request) {
             if (config('app.debug')) return;
 
+            if ($e instanceof ValidationException) return;
+
             return $this->getErrorResponse($e);
         });
     }
@@ -51,12 +53,7 @@ class Handler extends ExceptionHandler
             $message = $e->getMessage();
         } else {
             $statusCode = 500;
-
-            if ($e instanceof ValidationException) {
-                $message = $e->getMessage();
-                $statusCode = 422;
-            } else
-                $message = trans('response.error');
+            $message = trans('response.error');
         }
 
         return (new ErrorResource($e))
