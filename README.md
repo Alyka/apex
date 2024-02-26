@@ -257,7 +257,7 @@ public function update(UpdateRequest $request, int $id): JsonResource
 
 - Action: `update`
 - Form request class: `UpdateRequest`
-- Api resource: `IUpdateResource`
+- Api resource: `UpdateResource`
 
 
 #### The service
